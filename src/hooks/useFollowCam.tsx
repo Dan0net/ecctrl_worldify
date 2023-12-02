@@ -14,8 +14,11 @@ export const useFollowCam = function (props: UseFollowCamProps) {
   let originZDis = props.camInitDis;
   const camMaxDis = props.camMaxDis;
   const camMinDis = props.camMinDis;
+  const camMaxXAng = props.camMaxXAng;
+  const camMinXAng = props.camMinXAng;
   const camMoveSpeed = props.camMoveSpeed;
   const camZoomSpeed = props.camZoomSpeed;
+  const camMoveSpeedJoystickMulti = props.camMoveSpeedJoystickMulti;
   const camCollisionOffset = props.camCollisionOffset;
   const pivot = useMemo(() => new THREE.Object3D(), []);
   const followCam = useMemo(() => {
@@ -52,7 +55,7 @@ export const useFollowCam = function (props: UseFollowCamProps) {
 
       cameraDistance = followCam.position.length();
 
-      if (vy >= -0.5 && vy <= 1.5) {
+      if (vy >= camMinXAng && vy <= camMaxXAng) {
         followCam.rotation.x = vy;
         followCam.position.y = -cameraDistance * Math.sin(-vy);
         followCam.position.z = -cameraDistance * Math.cos(-vy);
@@ -94,12 +97,12 @@ export const useFollowCam = function (props: UseFollowCamProps) {
       const touch1MovementX = touch1.pageX - previousTouch1.pageX;
       const touch1MovementY = touch1.pageY - previousTouch1.pageY;
 
-      pivot.rotation.y -= touch1MovementX * 0.005 * camMoveSpeed;
-      const vy = followCam.rotation.x + touch1MovementY * 0.005 * camMoveSpeed;
+      pivot.rotation.y -= touch1MovementX * 0.005 * camMoveSpeed * camMoveSpeedJoystickMulti;
+      const vy = followCam.rotation.x + touch1MovementY * 0.005 * camMoveSpeed * camMoveSpeedJoystickMulti;
 
       cameraDistance = followCam.position.length();
 
-      if (vy >= -0.5 && vy <= 1.5) {
+      if (vy >= camMinXAng && vy <= camMaxXAng) {
         followCam.rotation.x = vy;
         followCam.position.y = -cameraDistance * Math.sin(-vy);
         followCam.position.z = -cameraDistance * Math.cos(-vy);
@@ -231,7 +234,10 @@ export type UseFollowCamProps = {
   camInitDis: number;
   camMaxDis: number;
   camMinDis: number;
+  camMaxXAng: number;
+  camMinXAng: number;
   camMoveSpeed: number;
+  camMoveSpeedJoystickMulti: number;
   camZoomSpeed: number;
   camCollisionOffset: number;
 };

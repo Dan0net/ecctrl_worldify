@@ -56,9 +56,12 @@ const Ecctrl = forwardRef<RapierRigidBody, EcctrlProps>(({
   camInitDis = -5,
   camMaxDis = -7,
   camMinDis = -0.7,
+  camMinXAng = -1.5,
+  camMaxXAng = 1.5,
   camInitDir = { x: 0, y: 0, z: 0 }, // in rad
   camTargetPos = { x: 0, y: 0, z: 0 },
   camMoveSpeed = 1,
+  camMoveSpeedJoystickMulti = 3,
   camZoomSpeed = 1,
   camCollision = true,
   camCollisionOffset = 0.7,
@@ -72,7 +75,6 @@ const Ecctrl = forwardRef<RapierRigidBody, EcctrlProps>(({
   sprintMult = 2,
   jumpVel = 4,
   jumpForceToGroundMult = 5,
-  joystickAngMulti = 2,
   slopJumpMult = 0.25,
   sprintJumpMult = 1.2,
   airDragMultiplier = 0.2,
@@ -436,7 +438,10 @@ const Ecctrl = forwardRef<RapierRigidBody, EcctrlProps>(({
     camInitDis,
     camMaxDis,
     camMinDis,
+    camMinXAng,
+    camMaxXAng
     camMoveSpeed,
+    camMoveSpeedJoystickMulti,
     camZoomSpeed,
     camCollisionOffset
   };
@@ -825,7 +830,7 @@ const Ecctrl = forwardRef<RapierRigidBody, EcctrlProps>(({
     // Move character to the moving direction (joystick controls)
     if (joystickDis > 0) {
       // Apply camera rotation to character model
-      modelEuler.y = pivot.rotation.y + (joystickAng * joystickAngMulti - Math.PI / 2)
+      modelEuler.y = pivot.rotation.y + (joystickAng - Math.PI / 2)
       moveCharacter(delta, runState, slopeAngle, movingObjectVelocity);
     }
 
@@ -1202,9 +1207,12 @@ export interface EcctrlProps extends RigidBodyProps {
   camInitDis?: number;
   camMaxDis?: number;
   camMinDis?: number;
+  camMaxXAng?: number;
+  camMinXAng?: number;
   camInitDir?: { x: number, y: number, z: number };
   camTargetPos?: { x: number, y: number, z: number };
   camMoveSpeed?: number;
+  camMoveSpeedJoystickMulti?: number;
   camZoomSpeed?: number;
   camCollision?: boolean;
   camCollisionOffset?: number;
@@ -1218,7 +1226,6 @@ export interface EcctrlProps extends RigidBodyProps {
   sprintMult?: number;
   jumpVel?: number;
   jumpForceToGroundMult?: number;
-  joystickAngMulti?: number;
   slopJumpMult?: number;
   sprintJumpMult?: number;
   airDragMultiplier?: number;
