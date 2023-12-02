@@ -98,12 +98,11 @@ const useFollowCam = function(props) {
       const touch1MovementY = touch1.pageY - previousTouch1.pageY;
       pivot.rotation.y -= touch1MovementX * 5e-3 * camMoveSpeed * camMoveSpeedJoystickMulti;
       const vy = followCam.rotation.x + touch1MovementY * 5e-3 * camMoveSpeed * camMoveSpeedJoystickMulti;
+      console.log(vy);
       cameraDistance = followCam.position.length();
-      if (vy >= camMinXAng && vy <= camMaxXAng) {
-        followCam.rotation.x = vy;
-        followCam.position.y = -cameraDistance * Math.sin(-vy);
-        followCam.position.z = -cameraDistance * Math.cos(-vy);
-      }
+      followCam.rotation.x = vy;
+      followCam.position.y = -cameraDistance * Math.sin(-vy);
+      followCam.position.z = -cameraDistance * Math.cos(-vy);
     }
     if (previousTouch2) {
       const prePinchDis = Math.hypot(

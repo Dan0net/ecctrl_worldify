@@ -99,14 +99,15 @@ export const useFollowCam = function (props: UseFollowCamProps) {
 
       pivot.rotation.y -= touch1MovementX * 0.005 * camMoveSpeed * camMoveSpeedJoystickMulti;
       const vy = followCam.rotation.x + touch1MovementY * 0.005 * camMoveSpeed * camMoveSpeedJoystickMulti;
+      console.log(vy)
 
       cameraDistance = followCam.position.length();
 
-      if (vy >= camMinXAng && vy <= camMaxXAng) {
+      // if (vy >= camMinXAng && vy <= camMaxXAng) {
         followCam.rotation.x = vy;
         followCam.position.y = -cameraDistance * Math.sin(-vy);
         followCam.position.z = -cameraDistance * Math.cos(-vy);
-      }
+      // }
     }
 
     // Two fingers touch to zoom in/out camera
