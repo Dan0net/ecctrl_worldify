@@ -439,7 +439,7 @@ const Ecctrl = forwardRef<RapierRigidBody, EcctrlProps>(({
     camMaxDis,
     camMinDis,
     camMinXAng,
-    camMaxXAng
+    camMaxXAng,
     camMoveSpeed,
     camMoveSpeedJoystickMulti,
     camZoomSpeed,
