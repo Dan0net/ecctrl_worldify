@@ -35,8 +35,11 @@ const useFollowCam = function(props) {
   let originZDis = props.camInitDis;
   const camMaxDis = props.camMaxDis;
   const camMinDis = props.camMinDis;
+  const camMaxXAng = props.camMaxXAng;
+  const camMinXAng = props.camMinXAng;
   const camMoveSpeed = props.camMoveSpeed;
   const camZoomSpeed = props.camZoomSpeed;
+  const camMoveSpeedJoystickMulti = props.camMoveSpeedJoystickMulti;
   const camCollisionOffset = props.camCollisionOffset;
   const pivot = react.useMemo(() => new THREE__namespace.Object3D(), []);
   const followCam = react.useMemo(() => {
@@ -63,7 +66,7 @@ const useFollowCam = function(props) {
       pivot.rotation.y -= e.movementX * 2e-3 * camMoveSpeed;
       const vy = followCam.rotation.x + e.movementY * 2e-3 * camMoveSpeed;
       cameraDistance = followCam.position.length();
-      if (vy >= -0.5 && vy <= 1.5) {
+      if (vy >= camMinXAng && vy <= camMaxXAng) {
         followCam.rotation.x = vy;
         followCam.position.y = -cameraDistance * Math.sin(-vy);
         followCam.position.z = -cameraDistance * Math.cos(-vy);
@@ -93,10 +96,10 @@ const useFollowCam = function(props) {
     if (previousTouch1 && !previousTouch2) {
       const touch1MovementX = touch1.pageX - previousTouch1.pageX;
       const touch1MovementY = touch1.pageY - previousTouch1.pageY;
-      pivot.rotation.y -= touch1MovementX * 5e-3 * camMoveSpeed;
-      const vy = followCam.rotation.x + touch1MovementY * 5e-3 * camMoveSpeed;
+      pivot.rotation.y -= touch1MovementX * 5e-3 * camMoveSpeed * camMoveSpeedJoystickMulti;
+      const vy = followCam.rotation.x + touch1MovementY * 5e-3 * camMoveSpeed * camMoveSpeedJoystickMulti;
       cameraDistance = followCam.position.length();
-      if (vy >= -0.5 && vy <= 1.5) {
+      if (vy >= camMinXAng && vy <= camMaxXAng) {
         followCam.rotation.x = vy;
         followCam.position.y = -cameraDistance * Math.sin(-vy);
         followCam.position.z = -cameraDistance * Math.cos(-vy);
@@ -811,10 +814,13 @@ const Ecctrl = react.forwardRef(({
   camInitDis = -5,
   camMaxDis = -7,
   camMinDis = -0.7,
+  camMinXAng = -1.5,
+  camMaxXAng = 1.5,
   camInitDir = { x: 0, y: 0, z: 0 },
   // in rad
   camTargetPos = { x: 0, y: 0, z: 0 },
   camMoveSpeed = 1,
+  camMoveSpeedJoystickMulti = 3,
   camZoomSpeed = 1,
   camCollision = true,
   camCollisionOffset = 0.7,
@@ -1149,7 +1155,10 @@ const Ecctrl = react.forwardRef(({
     camInitDis,
     camMaxDis,
     camMinDis,
+    camMinXAng,
+    camMaxXAng,
     camMoveSpeed,
+    camMoveSpeedJoystickMulti,
     camZoomSpeed,
     camCollisionOffset
   };
@@ -1592,6 +1601,7 @@ const Ecctrl = react.forwardRef(({
       ref: characterRef,
       position: props.position || [0, 5, 0],
       friction: props.friction || -0.5,
+      canSleep: false,
       ...props,
       children: [
         /* @__PURE__ */ jsxRuntime.jsx(
