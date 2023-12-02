@@ -72,6 +72,7 @@ const Ecctrl = forwardRef<RapierRigidBody, EcctrlProps>(({
   sprintMult = 2,
   jumpVel = 4,
   jumpForceToGroundMult = 5,
+  joystickAngMulti = 2,
   slopJumpMult = 0.25,
   sprintJumpMult = 1.2,
   airDragMultiplier = 0.2,
@@ -824,7 +825,7 @@ const Ecctrl = forwardRef<RapierRigidBody, EcctrlProps>(({
     // Move character to the moving direction (joystick controls)
     if (joystickDis > 0) {
       // Apply camera rotation to character model
-      modelEuler.y = pivot.rotation.y + (joystickAng - Math.PI / 2)
+      modelEuler.y = pivot.rotation.y + (joystickAng * joystickAngMulti - Math.PI / 2)
       moveCharacter(delta, runState, slopeAngle, movingObjectVelocity);
     }
 
@@ -1158,6 +1159,7 @@ const Ecctrl = forwardRef<RapierRigidBody, EcctrlProps>(({
       ref={characterRef}
       position={props.position || [0, 5, 0]}
       friction={props.friction || -0.5}
+      canSleep={false}
       {...props}
     >
       <CapsuleCollider
@@ -1216,6 +1218,7 @@ export interface EcctrlProps extends RigidBodyProps {
   sprintMult?: number;
   jumpVel?: number;
   jumpForceToGroundMult?: number;
+  joystickAngMulti?: number;
   slopJumpMult?: number;
   sprintJumpMult?: number;
   airDragMultiplier?: number;
