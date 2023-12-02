@@ -234,8 +234,8 @@ export type UseFollowCamProps = {
   camInitDis: number;
   camMaxDis: number;
   camMinDis: number;
-  camMaxXAng: number;
   camMinXAng: number;
+  camMaxXAng: number;
   camMoveSpeed: number;
   camMoveSpeedJoystickMulti: number;
   camZoomSpeed: number;
