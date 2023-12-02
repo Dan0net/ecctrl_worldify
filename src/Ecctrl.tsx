@@ -62,6 +62,7 @@ const Ecctrl = forwardRef<RapierRigidBody, EcctrlProps>(({
   camZoomSpeed = 1,
   camCollision = true,
   camCollisionOffset = 0.7,
+  collisionGroups = 0,
   // Follow light setups
   followLightPos = { x: 20, y: 30, z: 10 },
   // Base control setups
@@ -1162,6 +1163,7 @@ const Ecctrl = forwardRef<RapierRigidBody, EcctrlProps>(({
       <CapsuleCollider
         name="character-capsule-collider"
         args={[capsuleHalfHeight, capsuleRadius]}
+        collisionGroups={collisionGroups}
       />
       <group ref={characterModelRef} userData={{ camExcludeCollision: true }}>
         {/* This mesh is used for positioning the slope ray origin */}
@@ -1204,6 +1206,7 @@ export interface EcctrlProps extends RigidBodyProps {
   camZoomSpeed?: number;
   camCollision?: boolean;
   camCollisionOffset?: number;
+  collisionGroups?: number;
   // Follow light setups
   followLightPos?: { x: number, y: number, z: number };
   // Base control setups
